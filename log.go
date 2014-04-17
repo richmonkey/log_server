@@ -64,6 +64,7 @@ func NewLogger(tag string) *Logger {
 func (logger *Logger) FilePath(name string) string {
     return ROOT + "/" + logger.tag + "/" + name
 }
+
 func (logger *Logger) CurrentFilePath() string {
     name := fmt.Sprintf("log.%d", logger.index)
     path := logger.FilePath(name)
@@ -138,13 +139,14 @@ func init_tags() {
 
 func main() {
     log.SetFlags(log.Lshortfile|log.LstdFlags)
-    ip := net.ParseIP("0.0.0.0")
-    addr := net.TCPAddr{ip, 24000, ""}
     
+    init_tags()
     for _, t := range tags {
         go t.Run()
     }
 
+    ip := net.ParseIP("0.0.0.0")
+    addr := net.TCPAddr{ip, 24000, ""}
     listen, err := net.ListenTCP("tcp", &addr);
     if err != nil {
         fmt.Println("初始化失败", err.Error())

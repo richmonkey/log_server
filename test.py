@@ -10,7 +10,7 @@ def test():
     s.connect(address)
     count = 1024*1024/2
     while count:
-        s.send("application:test\n")
+        s.send("application:test%d\n"%count)
         count -= 1
 
 
