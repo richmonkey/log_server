@@ -8,8 +8,11 @@ import "path/filepath"
 import "os"
 import "strconv"
 import "log"
+import "github.com/jimlawless/cfg"
 
-const ROOT = "/tmp/"
+var ROOT = "/tmp/"
+var PORT = 24000
+
 const GB = 1024*1024*1024
 
 type Logger struct {
@@ -135,9 +138,40 @@ func handle_client(conn *net.TCPConn) {
 
 func init_tags() {
     tags["application"] = NewLogger("application")
+    tags["device"] = NewLogger("device")
+    tags["ng_application"] = NewLogger("ng_application")
+}
+
+func read_cfg() {
+    app_cfg := make(map[string]string)
+	err := cfg.Load("log.cfg", app_cfg)
+	if err != nil {
+		log.Fatal(err)
+	}
+    root, present := app_cfg["root"]
+    if !present {
+        fmt.Println("need config root directory")
+        os.Exit(1)
+    }
+    ROOT = root
+
+    port, present := app_cfg["port"]
+    if !present {
+        fmt.Println("need config listen port")
+        os.Exit(1)
+    }
+    nport, err := strconv.Atoi(port)
+    if err != nil {
+        fmt.Println("need config listen port")
+        os.Exit(1)
+    }
+    PORT = nport
+	fmt.Printf("root:%s port:%d\n", ROOT, PORT)
 }
 
 func main() {
+    read_cfg()
+
     log.SetFlags(log.Lshortfile|log.LstdFlags)
     
     init_tags()
@@ -146,7 +180,7 @@ func main() {
     }
 
     ip := net.ParseIP("0.0.0.0")
-    addr := net.TCPAddr{ip, 24000, ""}
+    addr := net.TCPAddr{ip, PORT, ""}
     listen, err := net.ListenTCP("tcp", &addr);
     if err != nil {
         fmt.Println("初始化失败", err.Error())
