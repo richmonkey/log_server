@@ -54,6 +54,7 @@ func init_tags() {
     tags["device"] = NewLogger("device")
     tags["ng_application"] = NewLogger("ng_application")
     day_tags["login"] = NewDailyLogger("login")
+    day_tags["payment"] = NewDailyLogger("payment")
 }
 
 func read_cfg() {
