@@ -11,7 +11,7 @@ import "github.com/jimlawless/cfg"
 
 var ROOT = "/tmp/"
 var PORT = 24000
-
+var BIND_ADDR = ""
 
 var tags = map[string]*Logger{}
 var day_tags = map[string]*DailyLogger{}
@@ -82,6 +82,12 @@ func read_cfg() {
     }
     PORT = nport
 	fmt.Printf("root:%s port:%d\n", ROOT, PORT)
+
+    if _, present = app_cfg["bind_addr"]; present {
+        BIND_ADDR = app_cfg["bind_addr"]
+    }
+	fmt.Printf("root:%s bind addr:%s port:%d\n", ROOT, BIND_ADDR, PORT)
+
 }
 
 func main() {
@@ -97,7 +103,7 @@ func main() {
         go t.Run()
     }
 
-    ip := net.ParseIP("0.0.0.0")
+    ip := net.ParseIP(BIND_ADDR)
     addr := net.TCPAddr{ip, PORT, ""}
     listen, err := net.ListenTCP("tcp", &addr);
     if err != nil {

@@ -11,6 +11,7 @@ def test():
     count = 1024*1024/2
     while count:
         s.send("application:test%d\n"%count)
+        s.send("login:test%d\n"%count)
         count -= 1
 
 
