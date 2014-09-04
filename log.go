@@ -55,6 +55,10 @@ func init_tags() {
     tags["ng_application"] = NewLogger("ng_application")
     day_tags["login"] = NewDailyLogger("login")
     day_tags["payment"] = NewDailyLogger("payment")
+	day_tags["register"] = NewDailyLogger("register")
+	day_tags["level"] = NewDailyLogger("level")
+	day_tags["mission"] = NewDailyLogger("mission")
+	day_tags["consumption"] = NewDailyLogger("consumption")
 }
 
 func read_cfg() {
