@@ -59,6 +59,7 @@ func init_tags() {
 	day_tags["level"] = NewDailyLogger("level")
 	day_tags["mission"] = NewDailyLogger("mission")
 	day_tags["consumption"] = NewDailyLogger("consumption")
+	day_tags["coin"] = NewDailyLogger("coin")
 }
 
 func read_cfg() {
