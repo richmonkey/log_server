@@ -54,6 +54,7 @@ func init_tags() {
 	tags["device"] = NewLogger("device")
 	tags["ng_application"] = NewLogger("ng_application")
 	tags["service"] = NewLogger("service")
+	tags["alarm_info"] = NewLogger("alarm_info")
 	day_tags["login"] = NewDailyLogger("login")
 	day_tags["payment"] = NewDailyLogger("payment")
 	day_tags["register"] = NewDailyLogger("register")
