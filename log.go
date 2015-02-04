@@ -16,7 +16,7 @@ var BIND_ADDR = ""
 var tags = map[string]*Logger{}
 var day_tags = map[string]*DailyLogger{}
 
-func handle_client(conn *net.TCPConn) {
+func handle_client(conn net.Conn) {
 	reader := bufio.NewReader(conn)
 
 	for {
@@ -109,19 +109,6 @@ func main() {
 	for _, t := range day_tags {
 		go t.Run()
 	}
-
-	ip := net.ParseIP(BIND_ADDR)
-	addr := net.TCPAddr{ip, PORT, ""}
-	listen, err := net.ListenTCP("tcp", &addr)
-	if err != nil {
-		fmt.Println("初始化失败", err.Error())
-		return
-	}
-	for {
-		client, err := listen.AcceptTCP()
-		if err != nil {
-			return
-		}
-		go handle_client(client)
-	}
+	addr := fmt.Sprintf("%s:%d", BIND_ADDR, PORT)
+	Serve(addr, handle_client)
 }
