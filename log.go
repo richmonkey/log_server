@@ -8,7 +8,7 @@ import (
     "os"
     "strconv"
     "github.com/jimlawless/cfg"
-    log "github.com/golang/glog"
+    "log"
     "sync"
     "flag"
 )
@@ -47,7 +47,7 @@ func handle_client(conn net.Conn) {
 
         l := line[index+1:]
 
-        log.Infof("tag:%s line:%s", tag, l)
+        log.Printf("tag:%s line:%s", tag, l)
         if day_logger != nil {
             day_logger.ch <- l
         }
@@ -89,6 +89,7 @@ func read_cfg(filename string) {
 
 func main() {
     flag.Parse()
+    log.SetFlags(log.Lshortfile | log.LstdFlags)
 
     var filename string
     if len(flag.Args()) == 0 {

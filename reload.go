@@ -2,7 +2,7 @@ package main
 
 import (
     "fmt"
-    log "github.com/golang/glog"
+    "log"
     "net"
     "os"
     "os/exec"
@@ -30,7 +30,7 @@ func WaitSignal(l net.Listener) error {
     signal.Notify(ch, syscall.SIGTERM, syscall.SIGHUP)
     for {
         sig := <-ch
-        log.Info(sig.String())
+        log.Println(sig.String())
         switch sig {
 
             case syscall.SIGTERM:
@@ -80,14 +80,14 @@ func Serve(laddr string, handler func(net.Conn)) {
     graceful := os.Getenv(Graceful)
     if graceful != "" {
         // entry 0 becomes file descriptor 3.
-        log.Infof("main: Listening to existing file descriptor %v.", FD)
+        log.Printf("main: Listening to existing file descriptor %v.", FD)
         f := os.NewFile(uintptr(FD), "")
         // file listener dup fd
         l, err = net.FileListener(f)
         // close file descriptor 3
         f.Close()
     } else {
-        log.Info("main: Listening on a new file descriptor.")
+        log.Println("main: Listening on a new file descriptor.")
         l, err = net.Listen("tcp", laddr)
     }
 
